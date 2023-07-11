@@ -1,5 +1,62 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/axios@0.24.0/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/qs@6.10.2/dist/qs.js"></script>
+  </head>
   <body>
+    <input type="file" id="fileInput" multiple />
+    <script>
+      //  async function urlParam() {
+      //    const res1 = await axios.get('/api/person/1'); // url params
+
+      //    const res2 = await axios.get('/api/person/find', { // query
+      //      params: {
+      //        name: '光',
+      //        age: 20,
+      //      },
+      //    });
+
+      //  const res3 = await axios.post('/api/person',  Qs.stringify({ // form-urlencoded query字符串放在body中
+      //    name: '光22',
+      //    age: 20,
+      //  }), {
+      // 	headers: {
+      // 		'content-type': 'application/x-www-form-urlencoded'
+      // 	}
+      //  });
+
+      //    const res3 = await axios.post('/api/person', { // json
+      //      name: '光22',
+      //      age: 20,
+      //    });
+      //  }
+
+      //  urlParam();
+
+      // const fileInput = document.querySelector('#fileInput'); // form data文件上传
+
+      // async function formData() {
+      //   const data = new FormData();
+      //   data.set('name', '光');
+      //   data.set('age', 20);
+      //   data.set('file1', fileInput.files[0]);
+
+      //   const res = await axios.post('/api/person/file', data, {
+      //     headers: {
+      //       'content-type': 'multipart/form-data',
+      //     },
+      //   });
+
+      //   console.log('res==>', res);
+      // }
+
+      // fileInput.onchange = formData;
+    </script>
+
     hello
   </body>
 </html>
