@@ -9,8 +9,8 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'public'), { prefix: '/static' });
   await app.listen(3000);
 
-  setTimeout(() => {
-    app.close();
-  }, 3000);
+  // setTimeout(() => {
+  //   app.close();
+  // }, 3000);
 }
 bootstrap();

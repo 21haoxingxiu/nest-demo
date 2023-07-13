@@ -11,11 +11,18 @@ import {
   OnModuleDestroy,
   BeforeApplicationShutdown,
   OnApplicationShutdown,
+  Inject,
+  Optional,
+  UseFilters,
+  HttpException,
+  HttpStatus,
+  Ip,
 } from '@nestjs/common';
 import { AaaService } from './aaa.service';
 import { CreateAaaDto } from './dto/create-aaa.dto';
 import { UpdateAaaDto } from './dto/update-aaa.dto';
 import { ModuleRef } from '@nestjs/core';
+import { AaaFilter } from './aaa.filter';
 
 @Controller('aaa')
 export class AaaController
@@ -26,6 +33,10 @@ export class AaaController
     BeforeApplicationShutdown,
     OnApplicationShutdown
 {
+  @Optional()
+  @Inject('Guang')
+  private readonly guang: Record<string, any>;
+
   constructor(
     private readonly aaaService: AaaService,
     private moduleRef: ModuleRef,
@@ -61,8 +72,16 @@ export class AaaController
   }
 
   @Get()
+  @UseFilters(AaaFilter)
   findAll() {
+    console.log(this.guang);
+    // throw new HttpException('xxx', HttpStatus.BAD_REQUEST);
     return this.aaaService.findAll();
+  }
+
+  @Get('/ip')
+  ip(@Ip() ip: string) {
+    console.log('请求的IP', ip);
   }
 
   @Get(':id')

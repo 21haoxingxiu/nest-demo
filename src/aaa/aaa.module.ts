@@ -5,7 +5,17 @@ import { log } from 'console';
 
 @Module({
   controllers: [AaaController],
-  providers: [AaaService],
+  providers: [
+    AaaService,
+    {
+      provide: 'Guang',
+      useFactory() {
+        return {
+          name: 'guang',
+        };
+      },
+    },
+  ],
 })
 export class AaaModule implements OnModuleInit, OnApplicationBootstrap {
   onModuleInit() {
