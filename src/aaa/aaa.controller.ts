@@ -17,14 +17,19 @@ import {
   HttpException,
   HttpStatus,
   Ip,
+  UseGuards,
+  Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { AaaService } from './aaa.service';
 import { CreateAaaDto } from './dto/create-aaa.dto';
 import { UpdateAaaDto } from './dto/update-aaa.dto';
 import { ModuleRef } from '@nestjs/core';
 import { AaaFilter } from './aaa.filter';
+import { Aaa, AaaCtr, Ccc, MyQuery } from './aaa.decorator';
+import { AaaGuard } from './aaa.guard';
 
-@Controller('aaa')
+@AaaCtr()
 export class AaaController
   implements
     OnModuleInit,
@@ -73,10 +78,23 @@ export class AaaController
 
   @Get()
   @UseFilters(AaaFilter)
-  findAll() {
+  @Aaa('admin')
+  @UseGuards(AaaGuard)
+  findAll(@Ccc() c) {
     console.log(this.guang);
     // throw new HttpException('xxx', HttpStatus.BAD_REQUEST);
+    return c;
     return this.aaaService.findAll();
+  }
+
+  // 自定义装饰器，参数转换
+  @Get('d2')
+  getD2(
+    @Query('aaa', new ParseIntPipe()) aaa,
+    @MyQuery('bbb', new ParseIntPipe()) bbb,
+  ) {
+    console.log('aaa', aaa);
+    console.log('bbb', bbb);
   }
 
   @Get('/ip')
