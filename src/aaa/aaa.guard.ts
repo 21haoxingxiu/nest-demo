@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
+import { Role } from './role';
 
 @Injectable()
 export class AaaGuard implements CanActivate {
@@ -15,8 +16,16 @@ export class AaaGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    console.log(this.reflector.get('aaa', context.getHandler()));
+    const requiredRoles = this.reflector.get<Role[]>(
+      'roles',
+      context.getHandler(),
+    );
 
-    return true;
+    if (!requiredRoles) {
+      return true;
+    }
+
+    const { user } = context.switchToHttp().getRequest();
+    return requiredRoles.some((role) => user && user.roles?.includes(role));
   }
 }

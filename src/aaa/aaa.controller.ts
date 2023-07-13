@@ -25,9 +25,12 @@ import { AaaService } from './aaa.service';
 import { CreateAaaDto } from './dto/create-aaa.dto';
 import { UpdateAaaDto } from './dto/update-aaa.dto';
 import { ModuleRef } from '@nestjs/core';
-import { AaaFilter } from './aaa.filter';
+import { AaaFilter, AaaFilterException } from './aaa.filter';
 import { Aaa, AaaCtr, Ccc, MyQuery } from './aaa.decorator';
 import { AaaGuard } from './aaa.guard';
+import { AaaException } from './Aaa.Exception';
+import { Roles } from './roles.decorator';
+import { Role } from './role';
 
 @AaaCtr()
 export class AaaController
@@ -79,7 +82,6 @@ export class AaaController
   @Get()
   @UseFilters(AaaFilter)
   @Aaa('admin')
-  @UseGuards(AaaGuard)
   findAll(@Ccc() c) {
     console.log(this.guang);
     // throw new HttpException('xxx', HttpStatus.BAD_REQUEST);
@@ -89,10 +91,14 @@ export class AaaController
 
   // 自定义装饰器，参数转换
   @Get('d2')
+  @UseFilters(AaaFilterException)
+  @UseGuards(AaaGuard)
+  @Roles(Role.Admin) // 权限控制
   getD2(
     @Query('aaa', new ParseIntPipe()) aaa,
     @MyQuery('bbb', new ParseIntPipe()) bbb,
   ) {
+    throw new AaaException('aaa', 'bbb');
     console.log('aaa', aaa);
     console.log('bbb', bbb);
   }
