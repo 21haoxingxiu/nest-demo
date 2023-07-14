@@ -20,6 +20,7 @@ import {
   UseGuards,
   Query,
   ParseIntPipe,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AaaService } from './aaa.service';
 import { CreateAaaDto } from './dto/create-aaa.dto';
@@ -31,6 +32,7 @@ import { AaaGuard } from './aaa.guard';
 import { AaaException } from './Aaa.Exception';
 import { Roles } from './roles.decorator';
 import { Role } from './role';
+import { AaaInterceptor, MapTestInterceptor } from './aaa/aaa.interceptor';
 
 @AaaCtr()
 export class AaaController
@@ -92,13 +94,16 @@ export class AaaController
   // 自定义装饰器，参数转换
   @Get('d2')
   @UseFilters(AaaFilterException)
-  @UseGuards(AaaGuard)
-  @Roles(Role.Admin) // 权限控制
+  // @UseGuards(AaaGuard)
+  // @Roles(Role.Admin) // 权限控制
+  @UseInterceptors(AaaInterceptor)
+  @UseInterceptors(MapTestInterceptor)
   getD2(
     @Query('aaa', new ParseIntPipe()) aaa,
     @MyQuery('bbb', new ParseIntPipe()) bbb,
   ) {
-    throw new AaaException('aaa', 'bbb');
+    // throw new AaaException('aaa', 'bbb');
+    return 'aaa';
     console.log('aaa', aaa);
     console.log('bbb', bbb);
   }
